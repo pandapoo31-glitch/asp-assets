@@ -1,31 +1,26 @@
-name: Threads Auto Reply
-
-  "on":
+name: Threads Auto Reply                                                                      
+  
+on:
     schedule:
       - cron: "30 0 * * 1"
       - cron: "30 0 * * 3"
       - cron: "30 0 * * 5"
     workflow_dispatch:
-
-  jobs:
+jobs:
     reply:
       runs-on: ubuntu-latest
       timeout-minutes: 10
-
       steps:
         - uses: actions/checkout@v4
-
         - uses: actions/setup-python@v5
           with:
             python-version: "3.12"
             cache: pip
-
         - name: Install dependencies
           run: pip install requests anthropic
-
         - name: Run Threads auto reply
           env:
             THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
-            THREADS_USER_ID:      ${{ secrets.THREADS_USER_ID }}
-            ANTHROPIC_API_KEY:    ${{ secrets.ANTHROPIC_API_KEY }}
+            THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+            ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           run: python scripts/threads_auto_reply.py
